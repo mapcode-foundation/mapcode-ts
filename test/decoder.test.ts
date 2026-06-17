@@ -244,6 +244,11 @@ describe("DecoderTest", () => {
     expect(() => MapcodeCodec.decode("NLD V11N.NZZ", Territory.NLD)).toThrow(UnknownMapcodeError);
   });
 
+  it("decodeToRectangle rejects unknown mapcodes", () => {
+    expect(() => MapcodeCodec.decodeToRectangle("ZZ.ZZ", Territory.NLD)).toThrow(UnknownMapcodeError);
+    expect(() => MapcodeCodec.decodeToRectangle("NLD ZZ.ZZ")).toThrow(UnknownMapcodeError);
+  });
+
   it("invalidHighPrecisionCharacter", () => {
     expect(() => MapcodeCodec.decode("49.4V-Z", Territory.NLD)).toThrow(IllegalArgumentError);
   });

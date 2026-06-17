@@ -17,7 +17,7 @@ import * as MapcodeCodec from "../src/codec.js";
 import { Mapcode } from "../src/mapcode.js";
 import { Point } from "../src/point.js";
 import { Territory } from "../src/territory.js";
-import { UnknownMapcodeError } from "../src/errors.js";
+import { IllegalArgumentError, UnknownMapcodeError } from "../src/errors.js";
 
 // 1:1 port of com.mapcode.EncoderTest. Expected values taken verbatim from
 // ../mapcode-java/src/test/java/com/mapcode/EncoderTest.java.
@@ -194,6 +194,16 @@ describe("EncoderTest", () => {
     mapcodeListsEqual(MapcodeCodec.encode(91, 0), MapcodeCodec.encode(90, 0));
     mapcodeListsEqual(MapcodeCodec.encode(0, -181), MapcodeCodec.encode(0, 179));
     mapcodeListsEqual(MapcodeCodec.encode(0, 181), MapcodeCodec.encode(0, -179));
+  });
+
+  it("rejects missing or non-finite encode coordinates", () => {
+    expect(() => MapcodeCodec.encode(Number.NaN, 0)).toThrow(IllegalArgumentError);
+    expect(() => MapcodeCodec.encode(Number.POSITIVE_INFINITY, 0)).toThrow(IllegalArgumentError);
+    expect(() => MapcodeCodec.encode(0, Number.NaN)).toThrow(IllegalArgumentError);
+    expect(() => MapcodeCodec.encode(0, undefined as unknown as number)).toThrow(IllegalArgumentError);
+    expect(() => MapcodeCodec.encode(Point.undefined())).toThrow(IllegalArgumentError);
+    expect(() => MapcodeCodec.encodeToInternational(0, undefined as unknown as number)).toThrow(IllegalArgumentError);
+    expect(() => MapcodeCodec.encodeToShortest(Number.NEGATIVE_INFINITY, 0, Territory.NLD)).toThrow(IllegalArgumentError);
   });
 
   it("testEncodeCiudadJuarez", () => {

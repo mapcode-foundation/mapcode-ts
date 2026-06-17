@@ -14,7 +14,8 @@
 
 import { describe, it, expect } from "vitest";
 import { Mapcode } from "../src/mapcode.js";
-import { UnknownPrecisionFormatError } from "../src/errors.js";
+import { IllegalArgumentError, UnknownPrecisionFormatError } from "../src/errors.js";
+import { Territory } from "../src/territory.js";
 
 describe("Mapcode", () => {
   it("checkValidMapcodeFormat", () => {
@@ -134,6 +135,17 @@ describe("Mapcode", () => {
 
   it("checkUnknownPrecisionFormatException2", () => {
     expect(() => Mapcode.getPrecisionFormat("494.V494V")).toThrow(UnknownPrecisionFormatError);
+  });
+
+  it("rejects precision arguments outside integer range", () => {
+    const mapcode = new Mapcode("49.4V", Territory.NLD);
+
+    expect(() => mapcode.getCode(-1)).toThrow(IllegalArgumentError);
+    expect(() => mapcode.getCode(0.5)).toThrow(IllegalArgumentError);
+    expect(() => mapcode.getCodeWithTerritory(-1)).toThrow(IllegalArgumentError);
+    expect(() => mapcode.getCodeWithTerritoryFullname(0.5)).toThrow(IllegalArgumentError);
+    expect(() => Mapcode.getSafeMaxOffsetInMeters(0.5)).toThrow(IllegalArgumentError);
+    expect(() => Mapcode.getSafeMaxOffsetInMeters(Number.NaN)).toThrow(IllegalArgumentError);
   });
 
   it("checkConvertToAscii", () => {

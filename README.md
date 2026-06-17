@@ -11,7 +11,7 @@ This is a faithful TypeScript port of the [mapcode-java](https://github.com/mapc
 (version 2.4.19).
 
 Licensed under the [Apache License, Version 2.0](LICENSE).
-Copyright (C) 2014-2024, Stichting Mapcode Foundation. 
+Copyright (C) 2014-2026, Stichting Mapcode Foundation. 
 
 ---
 
@@ -101,8 +101,8 @@ console.log(t.getFullName());     // "Netherlands"
 
 // Request a mapcode rendered in a specific alphabet:
 const m = encodeToShortest(37.9715, 23.7263, Territory.GRC);
-console.log(m.getCode());                         // Roman: "ΗΠ.Θ2" (decoded from Unicode input)
-console.log(m.getCode(Alphabet.GREEK));           // Greek script
+console.log(m.getCode());                         // Roman: "HJ.Q5"
+console.log(m.getCode(Alphabet.GREEK));           // Greek script: "ΗΠ.485"
 ```
 
 ---

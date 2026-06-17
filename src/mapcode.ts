@@ -76,16 +76,14 @@ export class Mapcode {
   getCode(precision: number, alphabet?: Alphabet | null): string;
   getCode(precisionOrAlphabet?: number | Alphabet | null, alphabet?: Alphabet | null): string {
     const { precision, alpha } = Mapcode.resolveArgs(precisionOrAlphabet, alphabet);
+    Mapcode.checkPrecision(precision);
     if (precision === 0) {
       return convertStringToAlphabet(this.codePrecision8.substring(0, this.codePrecision8.length - 9), alpha);
-    } else if (precision <= 8) {
-      return convertStringToAlphabet(
-        this.codePrecision8.substring(0, this.codePrecision8.length - 8 + precision),
-        alpha,
-      );
-    } else {
-      throw new IllegalArgumentError("getCodePrecision: precision must be in [0, 8]");
     }
+    return convertStringToAlphabet(
+      this.codePrecision8.substring(0, this.codePrecision8.length - 8 + precision),
+      alpha,
+    );
   }
 
   /**
@@ -139,6 +137,12 @@ export class Mapcode {
       return { precision: 0, alpha: alphabet ?? null };
     }
     return { precision: precisionOrAlphabet, alpha: alphabet ?? null };
+  }
+
+  private static checkPrecision(precision: number): void {
+    if (!Number.isInteger(precision) || precision < 0 || precision > 8) {
+      throw new IllegalArgumentError("precision must be an integer in [0, 8]");
+    }
   }
 
   /**
@@ -248,9 +252,7 @@ export class Mapcode {
    * Get a safe maximum for the distance between a decoded mapcode and its original location.
    */
   static getSafeMaxOffsetInMeters(precision: number): number {
-    if (precision < 0 || precision > 8) {
-      throw new IllegalArgumentError("precision must be in [0, 8]");
-    }
+    Mapcode.checkPrecision(precision);
     return Mapcode.PRECISION_0_MAX_OFFSET_METERS[precision];
   }
 

@@ -17,6 +17,7 @@ import { Boundary } from "./boundary.js";
 import { Common } from "./common.js";
 import { Data } from "./data.js";
 import { DataModel } from "./data-model.js";
+import { IllegalArgumentError } from "./errors.js";
 import { Mapcode } from "./mapcode.js";
 import { Point } from "./point.js";
 import { Territory } from "./territory.js";
@@ -34,6 +35,12 @@ const createBoundaryForTerritoryRecord = Boundary.createBoundaryForTerritoryReco
 const { X_SIDE, Y_SIDE, NC, xDivider, countCityCoordinatesForCountry, getFirstNamelessRecord } = Common;
 
 const ENCODE_CHARS = Data.ENCODE_CHARS;
+
+function checkFiniteCoordinate(param: string, value: number): void {
+  if (!Number.isFinite(value)) {
+    throw new IllegalArgumentError(`Parameter ${param} must be a finite number`);
+  }
+}
 
 function encodeExtension(
   pointToEncode: Point,
@@ -464,6 +471,8 @@ export class Encoder {
     territory: Territory | null,
     limitToOneResult: boolean,
   ): Mapcode[] {
+    checkFiniteCoordinate("latDeg", latDeg);
+    checkFiniteCoordinate("lonDeg", lonDeg);
     return encodeInternal(latDeg, lonDeg, territory, limitToOneResult, null);
   }
 }

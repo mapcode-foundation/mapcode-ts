@@ -51,7 +51,7 @@ export function encode(
   if (arg0 instanceof Point) {
     const point = arg0;
     const restrictToTerritory = (arg1 as Territory | null | undefined) ?? null;
-    checkNonnull("point", point);
+    checkDefined("point", point);
     return encode(point.getLatDeg(), point.getLonDeg(), restrictToTerritory);
   }
   const latDeg = arg0;
@@ -225,6 +225,11 @@ export function decode(mapcode: string, defaultTerritoryContext?: Territory | nu
 export function decodeToRectangle(mapcode: string, defaultTerritoryContext?: Territory | null): Rectangle {
   checkNonnull("mapcode", mapcode);
   const mapcodeZone = decodeToMapcodeZone(mapcode, defaultTerritoryContext ?? null);
+  if (mapcodeZone.isEmpty()) {
+    throw new UnknownMapcodeError(
+      "Unknown mapcode, mapcode=" + mapcode + ", territoryContext=" + defaultTerritoryContext,
+    );
+  }
   const southWest = Point.fromLatLonFractions(mapcodeZone.getLatFractionMin(), mapcodeZone.getLonFractionMin());
   const northEast = Point.fromLatLonFractions(mapcodeZone.getLatFractionMax(), mapcodeZone.getLonFractionMax());
   const rectangle = new Rectangle(southWest, northEast);
