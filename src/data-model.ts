@@ -2,7 +2,7 @@ import { IncorrectDataModelError } from "./errors.js";
 import { MMINFO_DATA } from "./data/mminfo-data.js";
 
 // Equals Territory.values().length. Verified against bytes 6-7 of data/mminfo.dat. See Task 4 Step 2.
-const EXPECTED_NR_TERRITORIES = 533;
+const EXPECTED_NR_TERRITORIES: number = 533;
 
 const HEADER_VERSION_LO = 2, HEADER_VERSION_HI = 3;
 const HEADER_NR_TERRITORIES_RECS_LO = 4, HEADER_NR_TERRITORIES_RECS_HI = 5;
