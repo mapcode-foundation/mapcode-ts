@@ -36,11 +36,6 @@ export class Alphabet {
 
   private constructor(readonly name: string, private readonly number: number) {}
 
-  static register(a: Alphabet): void {
-    Alphabet.BY_NAME.set(a.name, a);
-    Alphabet.VALUES[a.number] = a;
-  }
-
   getNumber(): number { return this.number; }
   toString(): string { return this.name; }
 
@@ -53,16 +48,19 @@ export class Alphabet {
     if (found === undefined) throw new UnknownAlphabetError(trimmed);
     return found;
   }
-}
 
-// Build lookup tables (static instances are created above before this runs).
-for (const a of [
-  Alphabet.ROMAN, Alphabet.GREEK, Alphabet.CYRILLIC, Alphabet.HEBREW, Alphabet.DEVANAGARI,
-  Alphabet.MALAYALAM, Alphabet.GEORGIAN, Alphabet.KATAKANA, Alphabet.THAI, Alphabet.LAO,
-  Alphabet.ARMENIAN, Alphabet.BENGALI, Alphabet.GURMUKHI, Alphabet.TIBETAN, Alphabet.ARABIC,
-  Alphabet.KOREAN, Alphabet.BURMESE, Alphabet.KHMER, Alphabet.SINHALESE, Alphabet.THAANA,
-  Alphabet.CHINESE, Alphabet.TIFINAGH, Alphabet.TAMIL, Alphabet.AMHARIC, Alphabet.TELUGU,
-  Alphabet.ODIA, Alphabet.KANNADA, Alphabet.GUJARATI,
-]) {
-  Alphabet.register(a);
+  private static readonly _BUILD = (() => {
+    for (const a of [
+      Alphabet.ROMAN, Alphabet.GREEK, Alphabet.CYRILLIC, Alphabet.HEBREW, Alphabet.DEVANAGARI,
+      Alphabet.MALAYALAM, Alphabet.GEORGIAN, Alphabet.KATAKANA, Alphabet.THAI, Alphabet.LAO,
+      Alphabet.ARMENIAN, Alphabet.BENGALI, Alphabet.GURMUKHI, Alphabet.TIBETAN, Alphabet.ARABIC,
+      Alphabet.KOREAN, Alphabet.BURMESE, Alphabet.KHMER, Alphabet.SINHALESE, Alphabet.THAANA,
+      Alphabet.CHINESE, Alphabet.TIFINAGH, Alphabet.TAMIL, Alphabet.AMHARIC, Alphabet.TELUGU,
+      Alphabet.ODIA, Alphabet.KANNADA, Alphabet.GUJARATI,
+    ]) {
+      Alphabet.BY_NAME.set(a.name, a);
+      Alphabet.VALUES[a.getNumber()] = a;
+    }
+    return true;
+  })();
 }
