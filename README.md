@@ -18,7 +18,7 @@ Copyright (C) 2014-2024, Stichting Mapcode Foundation.
 ## Installation
 
 ```sh
-npm install mapcode
+npm install mapcode-ts
 ```
 
 ---
@@ -32,7 +32,7 @@ import {
   encode, encodeToShortest, encodeToInternational,
   decode, decodeToRectangle,
   Territory, Alphabet,
-} from "mapcode";
+} from "mapcode-ts";
 ```
 
 ### Encode a lat/lon to all mapcodes
