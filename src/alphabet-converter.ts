@@ -17,7 +17,7 @@ const ENCODE_CHARS: readonly string[] = [
 ];
 
 // Decoder.DECODE_CHARS (256 entries).
-const DECODE_CHARS: readonly number[] = [
+export const DECODE_CHARS: readonly number[] = [
   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -39,7 +39,7 @@ const DECODE_CHARS: readonly number[] = [
 const GREEK_CAPITAL_ALPHA = "Α";
 
 // Decoder.ASCII2LANGUAGE: one 36-char string per alphabet (columns A-Z then 0-9).
-const ASCII2LANGUAGE: readonly string[] = [
+export const ASCII2LANGUAGE: readonly string[] = [
   "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
   "\u0391\u0392\u039e\u0394\u0388\u0395\u0393\u0397\u0399\u03a0\u039a\u039b\u039c\u039d\u039f\u03a1\u0398\u03a8\u03a3\u03a4\u0389\u03a6\u03a9\u03a7\u03a5\u03960123456789",
   "\u0410\u0412\u0421\u0414\u0415\u0416\u0413\u041d\u0418\u041f\u041a\u041b\u041c\u0417\u041e\u0420\u0424\u042f\u0426\u0422\u042d\u0427\u0428\u0425\u0423\u04110123456789",
@@ -71,7 +71,7 @@ const ASCII2LANGUAGE: readonly string[] = [
 ];
 
 // Decoder.UNICODE2ASCII: [min, max, convert] ranges (min/max are code points).
-const UNICODE2ASCII: ReadonlyArray<readonly [number, number, string]> = [
+export const UNICODE2ASCII: ReadonlyArray<readonly [number, number, string]> = [
   [0x0041, 0x005a, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"],
   [0x0388, 0x03a9, "EU???????ABGDFZHQIKLMNCOJP?STYVXRW"],
   [0x0410, 0x042f, "AZBGDEFNI?KLMHOJPCTYQXSVW????U?R"],
@@ -122,7 +122,7 @@ function decodeChar(ch: string): number {
 
 // Decoder.aeuUnpack: unpack a vowel-encoded mapcode into all-digit form.
 // Returns "" on error. Assumes the input is already uppercase.
-function aeuUnpack(argStr: string): string {
+export function aeuUnpack(argStr: string): string {
   let str = decodeUTF16(argStr);
   let voweled = false;
   const lastpos = str.length - 1;
