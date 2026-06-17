@@ -1,0 +1,52 @@
+import { Data } from "./data.js";
+
+export class Common {
+  static readonly NC = [1, 31, 961, 29791, 923521, 28629151, 887503681];
+  static readonly X_SIDE = [0, 5, 31, 168, 961, 5208, 29791, 165869, 923521, 5141947];
+  static readonly Y_SIDE = [0, 6, 31, 176, 961, 5456, 29791, 165869, 923521, 5141947];
+
+  private static readonly X_DIVIDER_19 = [
+    360, 360, 360, 360, 360, 360, 361, 361, 361, 361,
+    362, 362, 362, 363, 363, 363, 364, 364, 365, 366,
+    366, 367, 367, 368, 369, 370, 370, 371, 372, 373,
+    374, 375, 376, 377, 378, 379, 380, 382, 383, 384,
+    386, 387, 388, 390, 391, 393, 394, 396, 398, 399,
+    401, 403, 405, 407, 409, 411, 413, 415, 417, 420,
+    422, 424, 427, 429, 432, 435, 437, 440, 443, 446,
+    449, 452, 455, 459, 462, 465, 469, 473, 476, 480,
+    484, 488, 492, 496, 501, 505, 510, 515, 520, 525,
+    530, 535, 540, 546, 552, 558, 564, 570, 577, 583,
+    590, 598, 605, 612, 620, 628, 637, 645, 654, 664,
+    673, 683, 693, 704, 715, 726, 738, 751, 763, 777,
+    791, 805, 820, 836, 852, 869, 887, 906, 925, 946,
+    968, 990, 1014, 1039, 1066, 1094, 1123, 1154, 1187, 1223,
+    1260, 1300, 1343, 1389, 1438, 1490, 1547, 1609, 1676, 1749,
+    1828, 1916, 2012, 2118, 2237, 2370, 2521, 2691, 2887, 3114,
+    3380, 3696, 4077, 4547, 5139, 5910, 6952, 8443, 10747, 14784,
+    23681, 59485,
+  ];
+
+  static xDivider(latMin: number, latMax: number): number {
+    if (latMin >= 0) {
+      return Common.X_DIVIDER_19[latMin >> 19];
+    } else if (latMax >= 0) {
+      return Common.X_DIVIDER_19[0];
+    } else {
+      return Common.X_DIVIDER_19[(-latMax) >> 19];
+    }
+  }
+
+  static countCityCoordinatesForCountry(codex: number, territoryRecord: number, firstTerritoryRecord: number): number {
+    const firstRecord = Common.getFirstNamelessRecord(codex, territoryRecord, firstTerritoryRecord);
+    let record = territoryRecord;
+    while (Data.getCodex(record) === codex) record++;
+    return record - firstRecord;
+  }
+
+  static getFirstNamelessRecord(codex: number, territoryRecord: number, firstTerritoryRecord: number): number {
+    let record = territoryRecord;
+    while (record >= firstTerritoryRecord && Data.isNameless(record) && Data.getCodex(record) === codex) record--;
+    record++;
+    return record;
+  }
+}
