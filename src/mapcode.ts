@@ -134,13 +134,14 @@ export class Mapcode {
    * - \p{L}\p{N} require the Unicode ('u') flag in JS.
    * - Possessive quantifiers ('++', '{2,3}+') are not supported in JS; dropped (no behavioral
    *   difference for these patterns under full-string matching).
-   * - Character-class intersection '[\p{L}\p{N}&&[^zZ]]' becomes JS set-difference '[[\p{L}\p{N}]--[zZ]]'
-   *   which requires the 'v' flag.
+   * - Character-class intersection '[\p{L}\p{N}&&[^zZ]]' / set-difference '[[\p{L}\p{N}]--[zZ]]'
+   *   (both require 'v' flag) replaced with negative-lookahead '(?:(?![zZ])[\p{L}\p{N}])' for
+   *   'u'-flag compatibility (ES2018, isomorphic/ES2020 target).
    */
   static readonly REGEX_TERRITORY = "[\\p{L}\\p{N}]{2,3}([\\-_][\\p{L}\\p{N}]{2,3})?";
   static readonly REGEX_CODE_PREFIX = "[\\p{L}\\p{N}]{2,5}";
   static readonly REGEX_CODE_POSTFIX = "[\\p{L}\\p{N}]{2,4}";
-  static readonly REGEX_CODE_PRECISION = "[\\-][[\\p{L}\\p{N}]--[zZ]]{1,8}";
+  static readonly REGEX_CODE_PRECISION = "[\\-](?:(?![zZ])[\\p{L}\\p{N}]){1,8}";
 
   static readonly REGEX_MAPCODE =
     "(" +
@@ -153,9 +154,9 @@ export class Mapcode {
     Mapcode.REGEX_CODE_PRECISION +
     ")?";
 
-  static readonly PATTERN_MAPCODE = new RegExp("^" + Mapcode.REGEX_MAPCODE + "$", "v");
-  static readonly PATTERN_TERRITORY = new RegExp("^" + Mapcode.REGEX_TERRITORY + " ", "v");
-  static readonly PATTERN_PRECISION = new RegExp(Mapcode.REGEX_CODE_PRECISION + "$", "v");
+  static readonly PATTERN_MAPCODE = new RegExp("^" + Mapcode.REGEX_MAPCODE + "$", "u");
+  static readonly PATTERN_TERRITORY = new RegExp("^" + Mapcode.REGEX_TERRITORY + " ", "u");
+  static readonly PATTERN_PRECISION = new RegExp(Mapcode.REGEX_CODE_PRECISION + "$", "u");
 
   /**
    * Return the mapcode precision format, given a mapcode string. Throws if the format is invalid.
