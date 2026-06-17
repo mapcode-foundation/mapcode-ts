@@ -1,7 +1,36 @@
 import { describe, it, expect } from "vitest";
 import { Alphabet } from "../src/alphabet.js";
 import { Mapcode } from "../src/mapcode.js";
+import { Territory } from "../src/territory.js";
+import * as MapcodeCodec from "../src/codec.js";
 import { UnknownAlphabetError } from "../src/errors.js";
+
+// Ported from AlphabetTest.convertCodeInAlphabet (codec-dependent helper).
+function convertCodeInAlphabet(code: string, territory: Territory, alphabet: Alphabet, precision: number): void {
+  // Check type.
+  const type = Mapcode.getPrecisionFormat(code);
+  expect(type, `code = ${code}, type = ${type}`).toBe(precision);
+
+  // Check original code and converted to ASCII point at same location.
+  const codeAscii = Mapcode.convertStringToPlainAscii(code);
+  const pointCode = MapcodeCodec.decode(code, territory);
+  const pointAscii = MapcodeCodec.decode(codeAscii, territory);
+  expect(pointCode.equals(pointAscii)).toBe(true);
+
+  // Check if it re-encodes to the same mapcode codes.
+  const mapcode = MapcodeCodec.encodeToShortest(pointCode, territory);
+  let codeRoman: string;
+  let codeAlphabet: string;
+  if (Mapcode.containsTerritory(code)) {
+    codeRoman = mapcode.getCodeWithTerritory(precision);
+    codeAlphabet = mapcode.getCodeWithTerritory(precision, alphabet);
+  } else {
+    codeRoman = mapcode.getCode(precision);
+    codeAlphabet = mapcode.getCode(precision, alphabet);
+  }
+  expect(codeRoman).toBe(codeAscii);
+  expect(codeAlphabet).toBe(code);
+}
 
 // Hardcoded ASCII/Greek pairs from AlphabetTest.CODE_TEST_PAIRS (Java).
 const CODE_TEST_PAIRS: readonly string[] = [
@@ -67,7 +96,11 @@ describe("Alphabet", () => {
   it("fromString out-of-range numeric throws", () => { expect(() => Alphabet.fromString("99")).toThrow(UnknownAlphabetError); });
   it("fromString trailing number throws", () => { expect(() => Alphabet.fromString("GREEK1")).toThrow(UnknownAlphabetError); });
 
-  it("testConvertToAlphabet (Greek round-trip pairs)", () => {
+  it("testConvertToAlphabet", () => {
+    convertCodeInAlphabet("ΗΠ.22", Territory.GRC, Alphabet.GREEK, 0);
+    convertCodeInAlphabet("ΗΠ.22-Φ2", Territory.GRC, Alphabet.GREEK, 2);
+    convertCodeInAlphabet("GRC ΗΠ.22-Φ2", Territory.GRC, Alphabet.GREEK, 2);
+
     for (let i = 0; i < CODE_TEST_PAIRS.length; i += 2) {
       const code = CODE_TEST_PAIRS[i];
       const expect_ = CODE_TEST_PAIRS[i + 1];
