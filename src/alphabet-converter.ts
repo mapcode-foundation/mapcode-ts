@@ -193,7 +193,7 @@ export function aeuUnpack(argStr: string): string {
 }
 
 // Encoder.aeuPack: add vowels to prevent all-digit mapcodes.
-function aeuPack(argStr: string, argShort: boolean): string {
+export function aeuPack(argStr: string, argShort: boolean): string {
   let str = argStr;
   let dotpos = -9;
   let rlen = str.length;

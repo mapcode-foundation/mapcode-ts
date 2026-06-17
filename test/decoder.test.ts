@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { DECODE_CHARS, ASCII2LANGUAGE, UNICODE2ASCII } from "../src/alphabet-converter.js";
 import * as MapcodeCodec from "../src/codec.js";
+import { DataModel } from "../src/data-model.js";
+import { Boundary } from "../src/boundary.js";
 import { Point } from "../src/point.js";
 import { Territory } from "../src/territory.js";
 import { IllegalArgumentError, UnknownMapcodeError } from "../src/errors.js";
@@ -254,5 +256,28 @@ describe("DecoderTest", () => {
 
   it("illegalArgument3", () => {
     expect(() => MapcodeCodec.decode(null as unknown as string)).toThrow(IllegalArgumentError);
+  });
+
+  // Ported from DecoderTest.java#getInternationalGrid: iterates all boundary records for the
+  // AAA (international) territory and logs them. No assertions exist in Java; ported as a
+  // smoke test that exercises the same code path and verifies at least one record is returned.
+  it("getInternationalGrid", () => {
+    const dataModel = DataModel.getInstance();
+    const aaaTerritory = Territory.AAA;
+    const firstRecord = dataModel.getDataFirstRecord(aaaTerritory.getNumber());
+    const lastRecord = dataModel.getDataLastRecord(aaaTerritory.getNumber());
+    let count = 0;
+    for (let r = firstRecord; r <= lastRecord; r++) {
+      const boundary = Boundary.createBoundaryForTerritoryRecord(r);
+      const southWest = Point.fromMicroDeg(boundary.getLatMicroDegMin(), boundary.getLonMicroDegMin());
+      const northEast = Point.fromMicroDeg(boundary.getLatMicroDegMax(), boundary.getLonMicroDegMax());
+      // In Java this method logs: "boundary=" + boundary + " southWest=" + southWest + " northEast=" + northEast
+      // We simply exercise the code path.
+      expect(boundary).toBeDefined();
+      expect(southWest).toBeDefined();
+      expect(northEast).toBeDefined();
+      count++;
+    }
+    expect(count).toBeGreaterThan(0);
   });
 });

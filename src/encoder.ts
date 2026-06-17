@@ -1,3 +1,4 @@
+import { aeuPack } from "./alphabet-converter.js";
 import { Boundary } from "./boundary.js";
 import { Common } from "./common.js";
 import { Data } from "./data.js";
@@ -311,51 +312,6 @@ function encodeNameless(pointToEncode: Point, territoryRecord: number, firstTerr
   result += encodeExtension(pointToEncode, extrax4, extray, dividerx4, dividery, -1); // for encodeNameless
 
   return result;
-}
-
-export function aeuPack(argStr: string, argShort: boolean): string {
-  // add vowels to prevent all-digit mapcodes
-  let str = argStr;
-  let dotpos = -9;
-  let rlen = str.length;
-  let d: number;
-  let rest = "";
-  for (d = 0; d < rlen; d++) {
-    if (str.charAt(d) < "0" || str.charAt(d) > "9") {
-      // not digit?
-      if (str.charAt(d) === "." && dotpos < 0) {
-        // first dot?
-        dotpos = d;
-      } else if (str.charAt(d) === "-") {
-        rest = str.substring(d);
-        str = str.substring(0, d);
-        rlen = d;
-      } else {
-        return str; // not all-digit (or multiple dots)
-      }
-    }
-  }
-
-  if (rlen - 2 > dotpos) {
-    // does r have a dot, AND at least 2 chars after the dot?
-    if (argShort) {
-      // use A only
-      const v =
-        (str.charCodeAt(0) - 48) * 100 + (str.charCodeAt(rlen - 2) - 48) * 10 + (str.charCodeAt(rlen - 1) - 48);
-      return (
-        "A" +
-        str.substring(1, rlen - 2) +
-        ENCODE_CHARS[Math.trunc(v / 32)] +
-        ENCODE_CHARS[v % 32] +
-        rest
-      );
-    } else {
-      // use A, E and U
-      const v = (str.charCodeAt(rlen - 2) - 48) * 10 + str.charCodeAt(rlen - 1) - 48;
-      str = str.substring(0, rlen - 2) + ENCODE_CHARS[31 + Math.trunc(v / 34)] + ENCODE_CHARS[v % 34];
-    }
-  }
-  return str + rest;
 }
 
 function encodeBase31(argValue: number, argNrChars: number): string {
