@@ -21,12 +21,12 @@
     "typecheck": "tsc --noEmit",
     "gen:data": "node --experimental-strip-types scripts/generate-data.mts"
   },
-  "engines": { "node": ">=18" },
+  "engines": { "node": ">=20" },
   "license": "Apache-2.0",
   "devDependencies": {
     "@types/node": "^25.9.3",
     "tsup": "^8.5.1",
-    "typescript": "^6.0.3",
+    "typescript": "^5.8.3",
     "vitest": "^4.1.9"
   }
 }
