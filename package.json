@@ -1,6 +1,6 @@
 {
   "name": "mapcode-ts",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Library to encode/decode mapcodes to/from latitude/longitude. TypeScript port of mapcode-java.",
   "keywords": [
     "mapcode",
