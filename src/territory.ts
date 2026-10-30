@@ -73,7 +73,7 @@ export class Territory {
   static readonly ABW = new Territory(25, "Aruba", null, null, null, null);
   static readonly MHL = new Territory(26, "Marshall Islands", null, null, ["WAK"], null);
   static readonly ASM = new Territory(27, "American Samoa", null, null, ["US-AS", "USA-AS"], ["Samoa, American"]);
-  static readonly COK = new Territory(28, "Cook islands", null, null, null, null);
+  static readonly COK = new Territory(28, "Cook Islands", null, null, null, null);
   static readonly SPM = new Territory(29, "Saint Pierre and Miquelon", null, null, null, ["Miquelon"]);
   static readonly NIU = new Territory(30, "Niue", null, null, null, null);
   static readonly KNA = new Territory(31, "Saint Kitts and Nevis", null, null, null, ["Nevis"]);
@@ -134,11 +134,11 @@ export class Territory {
   static readonly TLS = new Territory(86, "East Timor", [Alphabet.ROMAN, Alphabet.ARABIC], null, null, null);
   static readonly SWZ = new Territory(87, "Swaziland", null, null, null, null);
   static readonly KWT = new Territory(88, "Kuwait", [Alphabet.ARABIC, Alphabet.ROMAN], null, null, null);
-  static readonly FJI = new Territory(89, "Fiji Islands", [Alphabet.ROMAN, Alphabet.DEVANAGARI], null, null, null);
+  static readonly FJI = new Territory(89, "Republic of Fiji", [Alphabet.ROMAN, Alphabet.DEVANAGARI], null, null, null);
   static readonly NCL = new Territory(90, "New Caledonia", null, null, null, null);
   static readonly SVN = new Territory(91, "Slovenia", null, null, null, null);
   static readonly ISR = new Territory(92, "Israel", [Alphabet.HEBREW, Alphabet.ARABIC, Alphabet.ROMAN], null, null, null);
-  static readonly PSE = new Territory(93, "Palestinian territory", [Alphabet.HEBREW, Alphabet.ARABIC, Alphabet.ROMAN], null, null, null);
+  static readonly PSE = new Territory(93, "Palestine", [Alphabet.HEBREW, Alphabet.ARABIC, Alphabet.ROMAN], null, null, null);
   static readonly SLV = new Territory(94, "El Salvador", null, null, null, null);
   static readonly BLZ = new Territory(95, "Belize", null, null, null, null);
   static readonly DJI = new Territory(96, "Djibouti", [Alphabet.ARABIC, Alphabet.ROMAN], null, null, null);
@@ -445,7 +445,7 @@ export class Territory {
   static readonly CA_QC = new Territory(397, "Quebec", null, Territory.CAN, null, null);
   static readonly CA_SK = new Territory(398, "Saskatchewan", null, Territory.CAN, null, null);
   static readonly CA_MB = new Territory(399, "Manitoba", null, Territory.CAN, null, null);
-  static readonly CA_NL = new Territory(400, "Newfoundland", null, Territory.CAN, null, null);
+  static readonly CA_NL = new Territory(400, "Newfoundland and Labrador", null, Territory.CAN, null, null);
   static readonly CA_NB = new Territory(401, "New Brunswick", null, Territory.CAN, null, null);
   static readonly CA_NS = new Territory(402, "Nova Scotia", null, Territory.CAN, null, null);
   static readonly CA_PE = new Territory(403, "Prince Edward Island", null, Territory.CAN, null, null);
@@ -455,7 +455,7 @@ export class Territory {
   static readonly RU_MOW = new Territory(412, "Moscow", [Alphabet.CYRILLIC, Alphabet.ROMAN], Territory.RUS, null, null);
   static readonly RU_SPE = new Territory(413, "Saint Petersburg", [Alphabet.CYRILLIC, Alphabet.ROMAN], Territory.RUS, null, null);
   static readonly RU_KGD = new Territory(414, "Kaliningrad Oblast", [Alphabet.CYRILLIC, Alphabet.ROMAN], Territory.RUS, null, null);
-  static readonly RU_IN = new Territory(415, "Ingushetia Republic", [Alphabet.CYRILLIC, Alphabet.ROMAN], Territory.RUS, null, null);
+  static readonly RU_IN = new Territory(415, "Republic of Ingushetia", [Alphabet.CYRILLIC, Alphabet.ROMAN], Territory.RUS, null, null);
   static readonly RU_AD = new Territory(416, "Adygea Republic", [Alphabet.CYRILLIC, Alphabet.ROMAN], Territory.RUS, null, null);
   static readonly RU_SE = new Territory(417, "North Ossetia-Alania Republic", [Alphabet.CYRILLIC, Alphabet.ROMAN], Territory.RUS, null, null);
   static readonly RU_KB = new Territory(418, "Kabardino-Balkar Republic", [Alphabet.CYRILLIC, Alphabet.ROMAN], Territory.RUS, null, null);
