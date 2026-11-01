@@ -107,6 +107,45 @@ console.log(m.getCode(Alphabet.GREEK));           // Greek script: "ΗΠ.485"
 
 ---
 
+## Territory borders: mapcode-ts-borders
+
+Near a border, `encode` returns mapcodes for every territory whose mapcode area contains the point, not
+only the territory the point is really in. In Baarle-Nassau, in the Netherlands, the Belgian codes come first:
+
+```typescript
+encode(51.4436, 4.9326).map((m) => m.getCodeWithTerritory());
+// [ "BEL 4W4.ZPQ", "BEL P56B.ZD9", "NLD VZC.R3K", "NLD P56B.ZD9", "AAA VHXLS.GZ16" ]
+```
+
+The separate package [mapcode-ts-borders](https://github.com/mapcode-foundation/mapcode-ts-borders) settles
+this with OpenStreetMap border polygons. It ranks the mapcodes by the territory that contains the point, and
+it finds that territory for any point. This library does not need it and does not change when you add it.
+
+```sh
+npm install mapcode-ts mapcode-ts-borders
+```
+
+```typescript
+import { readFile } from "node:fs/promises";
+import { Borders, bordersUrl, encodeWithBorders } from "mapcode-ts-borders";
+
+// Load once (about 23 MB) and reuse the Borders object.
+const borders = Borders.fromBytes(await readFile(bordersUrl));
+
+const { best, mapcodes } = encodeWithBorders(51.4436, 4.9326, borders);
+best?.getCodeWithTerritory();                    // "NLD VZC.R3K"
+mapcodes.map((m) => m.getCodeWithTerritory());   // NLD codes first, then BEL, then AAA
+
+borders.getTerritories(34.0522, -118.2437).map((t) => t.territory.toString()); // [ "US-CA", "USA" ]
+borders.getCountry(34.0522, -118.2437)?.toString();                            // "USA"
+```
+
+To rank a list you already have, for example from `encodeRestrictToCountryISO`, use `rankByBorders`.
+The border data is derived from OpenStreetMap and is available under the ODbL. See the
+[mapcode-ts-borders README](https://github.com/mapcode-foundation/mapcode-ts-borders#readme) for details.
+
+---
+
 ## Java → TypeScript API mapping
 
 | Java (mapcode-java)                         | TypeScript (this library)              |
